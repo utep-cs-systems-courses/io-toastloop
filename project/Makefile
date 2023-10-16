@@ -11,6 +11,7 @@
 # Project Name and Test Name
 TARGET_NAME			:= tokenizer
 TEST_NAME			:= tokenizer_test
+SYSTEM_LIBRARIES	:= -I"C:/ti/ccs1250/ccs/ccs_base/msp430/include" -I"C:/ti/ccs1250/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include" -I"C:/ti/ccs1250/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/lib"
 
 # Parent Folders ./<build|data|docs|examples|external|extras|include|src|tests|tools>
 ROOT_DIR			:= .
@@ -73,9 +74,9 @@ TARGET_EXECUTABLE	:= $(TARGET_BIN_DIR)/$(TARGET_NAME)
 TEST_EXECUTABLE		:= $(TEST_BIN_DIR)/$(TEST_NAME)
 
 # Compiler and Linker
-CC					:= cc
-CXX					:= c++
-ASM					:= nasm
+CC					:= "cc"
+CXX					:= "g++"
+ASM					:= "nasm"
 
 # # Dependency Flags
 TARGET_DEP_FLAGS	:= $@ -MMD -MP -MF $(TARGET_DEP_DIR)/$*.d
@@ -86,12 +87,13 @@ TARGET_LIB_FLAGS	:= -L$(TARGET_LIB_DIR)
 TEST_LIB_FLAGS		:= -L$(TEST_LIB_DIR)
 
 # # Include Flags
-INCLUDE_FLAGS		:= -I$(INCLUDE_DIR) -I$(EXTERNAL_DIR) -I$(TARGET_SRC) -I$(TEST_SRC)
+INCLUDE_FLAGS		:= -I$(INCLUDE_DIR) -I$(EXTERNAL_DIR) -I$(TARGET_SRC) -I$(TEST_SRC) ${SYSTEM_LIBRARIES}
 
 # Compiler Flags
-FLAGS				:= $(INCLUDE_FLAGS)
-CC_FLAGS			:= $(FLAGS) -std=c99
-CXX_FLAGS			:= $(FLAGS) -std=c++2a
+FLAGS				:= $(INCLUDE_FLAGS) 
+MSP_FLAGS			:= -vmsp --code_model=small --data_model=small --use_hw_mpy=none --advice:power=all --define=__MSP430G2553__ -g --printf_support=minimal --diag_warning=225 --diag_wrap=off --display_error_number -z --heap_size=0 --stack_size=0 --reread_libs --diag_wrap=off --display_error_number --warn_sections --entry_point=RESET --use_hw_mpy=none
+CC_FLAGS			:= $(FLAGS) --c11 -std=c11
+CXX_FLAGS			:= $(FLAGS) --c++14 -std=c++14
 ASM_FLAGS			:= -f elf64
 
 # Library Files
