@@ -14,36 +14,17 @@
  */
 switch_t *switch_init(pin_t *pin) {
 
-    /* The code you provided is assigning a value to the `BIT` variable based on the value of the `pin`
-    parameter. */
-    short BIT = (pin == 0) ? BIT0 : 
-                (pin == 1) ? BIT1 : 
-                (pin == 2) ? BIT2 : 
-                (pin == 3) ? BIT3 : 
-                (pin == 4) ? BIT4 : 
-                (pin == 5) ? BIT5 : 
-                (pin == 6) ? BIT6 : 
-                BIT7;
-
-
-    /* These lines of code are configuring the specified pin of the specified port for the switch. */
-    OUT |= BIT;
-    DIR &= ~BIT;
-    IE |= BIT;
-    IES |= BIT;
-    IFG &= ~BIT;
-    REN |= BIT;
-    SEL &= ~BIT;
-    SEL2 &= ~BIT;
-
     /* This code is allocating memory for a switch object and initializing its members. */
     switch_t *sw = malloc(sizeof(switch_t));
-    sw->pin = pin;
+
+    sw->pin = &pin;
     sw->state = 0;
     sw->lastState = 0;
     sw->debounce = 0;
     sw->debounceCount = 0;
+
     return sw;
+
 }
 
 /**
@@ -52,8 +33,12 @@ switch_t *switch_init(pin_t *pin) {
  * @param sw The parameter "sw" is a pointer to a structure of type "switch_t".
  */
 void switch_update(switch_t *sw) {
+
+    *sw->pin->port->out |= *sw->pin->port->in;
+
     sw->lastState = sw->state;
-    sw->state = (P1IN & BIT3) ? 1 : 0;
+    sw->state = *(sw->pin->port->in) & sw->pin->pin;
+
     if (sw->state != sw->lastState) {
         sw->debounceCount++;
         if (sw->debounceCount > 10) {
@@ -61,6 +46,7 @@ void switch_update(switch_t *sw) {
             sw->debounce = sw->state;
         }
     }
+
 }
 
 /**
@@ -69,5 +55,7 @@ void switch_update(switch_t *sw) {
  * @param sw The parameter "sw" is a pointer to a switch_t structure.
  */
 void switch_close(switch_t *sw) {
+
     free(sw);
+
 }

@@ -2,7 +2,6 @@
 #DEFINE __SWITCH_H__
 
 #include <msp430.h>
-#include "port.h"
 #include "pin.h"
 
 
@@ -15,15 +14,18 @@
  * 
  */
 typedef struct {
-    port_t port;
-    pin_t pin;
+
+    pin_t *pin;
+
     unsigned char state;
     unsigned char lastState;
     unsigned char debounce;
     unsigned char debounceCount;
+
 } switch_t;
 
-switch_t *switchInit(unsigned char port, unsigned char pin);
-void switchUpdate(switch_t *sw);
+switch_t *switch_init(pin_t *pin);
+void switch_update(switch_t *sw);
+void switch_close(switch_t *sw);
 
 #ENDIF // __SWITCH_H__
