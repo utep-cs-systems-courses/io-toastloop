@@ -4,6 +4,7 @@
 #include <msp430.h>
 
 typedef struct {
+
     unsigned char *port;
     unsigned short *in;
     unsigned short *out;
@@ -14,6 +15,7 @@ typedef struct {
     unsigned short *ies;
     unsigned short *ie;
     unsigned short *ifg;
+
 } port_t;
 
 #ENDIF // __PORT_H__

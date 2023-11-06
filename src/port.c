@@ -2,9 +2,12 @@
 #include <msp430.h>
 #include "port.h"
 
-port_t *portInit(unsigned char port){
+port_t *port_init(unsigned char port){
+
     port_t *p = malloc(sizeof(port_t));
+
     switch(port){
+
         case 1:
             p->port = &P1OUT;
             p->in = &P1IN;
@@ -17,6 +20,7 @@ port_t *portInit(unsigned char port){
             p->ie = &P1IE;
             p->ifg = &P1IFG;
             break;
+
         case 2:
             p->port = &P2OUT;
             p->in = &P2IN;
@@ -29,14 +33,20 @@ port_t *portInit(unsigned char port){
             p->ie = &P2IE;
             p->ifg = &P2IFG;
             break;
+
         default:
             free(p);
             return NULL;
             break;
+
     }
+
     return p;
+
 }
 
 void port_close(port_t *p){
+
     free(p);
+
 }

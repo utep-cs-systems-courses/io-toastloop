@@ -5,8 +5,10 @@
 #include "port.h"
 
 typedef struct {
-    port_t port;
+
+    port_t *port;
     unsigned char pin;
+
 } pin_t;
 
 #ENDIF // __PIN_H__
