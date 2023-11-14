@@ -38,7 +38,7 @@ int main(void) {
     P2IFG &= (~BIT0 | ~BIT1 | ~BIT2 | ~BIT3);
     P2SEL &= (BIT6 | ~BIT7);
     P2SEL2 &= ~(BIT6 | BIT7);
-    __bis_SR_register(LPM4 | GIE);
+    __bis_SR_register((LPM4_bits | GIE));
     return 0;
 }
 /**
