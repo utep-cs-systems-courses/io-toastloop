@@ -6,8 +6,8 @@ CC              = msp430-elf-gcc
 AS              = msp430-elf-as
 all: test.elf
 test.elf: ${COMMON_OBJECTS}
-    ${CC} ${CFLAGS} ${LDFLAGS} -o $@ $^
+	${CC} ${CFLAGS} ${LDFLAGS} -o $@ $^
 load: test.elf
-    msp430loader.sh  $^
+	msp430loader.sh  $^
 clean: $^
-    rm -f .o.elf
+	rm -f .o.elf
